@@ -19,8 +19,8 @@ export const setupServer = () => {
     });
   });
 
-
   app.use('/api', contactRouter);
+
   app.use(
     pino({
       transport: {
