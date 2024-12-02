@@ -11,7 +11,7 @@ export const getContacts = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch contacts',
+      message: 'Failed to fetch some contacts',
     });
   }
 };
