@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
-import { env } from '../utils/env.js';
+import { env } from './utils/env.js';
 import { getContacts } from './controllers/contactController.js';
 import { getAllContacts } from './services/contacts.js';
 import contactRouter from './routes/contactRoutes.js';
@@ -19,7 +19,7 @@ export const setupServer = () => {
     });
   });
 
-  app.use('/api', contactRouter);
+  app.use(contactRouter);
 
   app.use(
     pino({
