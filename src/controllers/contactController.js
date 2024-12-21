@@ -6,13 +6,40 @@ import {
   updateContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+
+import { sortByList } from '../db/models/contact.js';
+
+import { parseFilterContactParams } from '../utils/filters/parseFilterContactParams.js';
 
 export const getContacts = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const filter = parseFilterContactParams(req.query);
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
+
+  if (contacts.data.length === 0) {
+    return res.status(200).json({
+      status: 200,
+      message: 'No contacts found for the given filter.',
+      data: contacts,
+      filter: Object.keys(filter).length > 0 ? filter : undefined, // добавляем filter только если он есть
+    });
+  }
+
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
     data: contacts,
+    filter: Object.keys(filter).length > 0 ? filter : undefined, // добавляем filter только если он есть
   });
 };
 
