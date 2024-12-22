@@ -10,9 +10,9 @@ export const contactSchema = Joi.object({
   phoneNumber: Joi.string()
     .pattern(/^(\+380\d{9}|0\d{9})$/)
     .required(),
-  email: Joi.string().email().required(),
-  isFavourite: Joi.boolean().required(),
-  contactType: Joi.string().valid('work', 'home', 'personal').required(),
+  email: Joi.string().email(),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string().valid('work', 'home', 'personal'),
 });
 
 export const updateContactSchema = Joi.object({
