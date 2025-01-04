@@ -17,7 +17,11 @@ export const getAllContacts = async ({
   }
   if (filter.isFavourite) {
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
-}
+  }
+  if (filter.userId) {
+    contactsQuery.where('userId').equals(filter.userId);
+   }
+
   const contactsCount = await contactsCollection
     .find()
     .merge(contactsQuery)
@@ -40,6 +44,8 @@ export const findContactById = async (contactId) => {
   const contact = await contactsCollection.findById(contactId);
   return contact;
 };
+
+export const getContactById = filter => contactsCollection.findOne(filter);
 
 export const addContactToBd = async (contact) => {
   const newContact = await contactsCollection.create(contact);

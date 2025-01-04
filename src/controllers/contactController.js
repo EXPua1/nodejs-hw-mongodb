@@ -17,6 +17,7 @@ export const getContacts = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
   const filter = parseFilterContactParams(req.query);
+  filter.userId = req.user._id;
 
   const contacts = await getAllContacts({
     page,
@@ -44,28 +45,33 @@ export const getContacts = async (req, res) => {
 };
 
 export const getContactById = async (req, res) => {
-  const { contactId } = req.params;
-  const contact = await findContactById(contactId);
+const {_id: userId} = req.user;
+
+  const { contactId : _id } = req.params;
+  const contact = await findContactById({ _id, userId });
+
 
   if (!contact) {
-    throw createHttpError(404, `Contact with id ${contactId} not found!`);
+    throw createHttpError(404, `Contact with id ${_id} not found!`);
   }
   res.status(200).json({
     status: 200,
-    message: `Successfully found contact with id ${contactId}!`,
+    message: `Successfully found contact with id ${_id}!`,
     data: contact,
   });
 };
 
 export const addContact = async (req, res) => {
+  const {_id: userId} = req.user;
   const contact = req.body;
-  const newContact = await addContactToBd(contact);
+  const newContact = await addContactToBd({...contact, userId});
 
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
     data: newContact,
   });
+
 };
 
 export const patchContact = async (req, res) => {
@@ -83,11 +89,12 @@ export const patchContact = async (req, res) => {
 };
 
 export const deleteContactById = async (req, res) => {
-  const { contactId } = req.params;
-  const contact = await deleteContactFromDb(contactId);
+  const { contactId: _id } = req.params;
+   const { _id: userId } = req.user;
+  const contact = await deleteContactFromDb({ _id, userId });
 
   if (!contact) {
-    throw createHttpError(404, `Contact with id ${contactId} not found!`);
+    throw createHttpError(404, `Contact with id ${_id} not found!`);
   }
   res.status(204).send();
 };
