@@ -32,7 +32,7 @@ export const getContacts = async (req, res) => {
       status: 200,
       message: 'No contacts found for the given filter.',
       data: contacts,
-      filter: Object.keys(filter).length > 0 ? filter : undefined, // добавляем filter только если он есть
+      // filter: Object.keys(filter).length > 0 ? filter : undefined, 
     });
   }
 
@@ -40,7 +40,7 @@ export const getContacts = async (req, res) => {
     status: 200,
     message: 'Successfully found contacts!',
     data: contacts,
-    filter: Object.keys(filter).length > 0 ? filter : undefined, // добавляем filter только если он есть
+    // filter: Object.keys(filter).length > 0 ? filter : undefined, 
   });
 };
 
