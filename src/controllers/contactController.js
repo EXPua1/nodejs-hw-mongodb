@@ -32,7 +32,7 @@ export const getContacts = async (req, res) => {
       status: 200,
       message: 'No contacts found for the given filter.',
       data: contacts,
-      // filter: Object.keys(filter).length > 0 ? filter : undefined, 
+      // filter: Object.keys(filter).length > 0 ? filter : undefined,
     });
   }
 
@@ -40,16 +40,15 @@ export const getContacts = async (req, res) => {
     status: 200,
     message: 'Successfully found contacts!',
     data: contacts,
-    // filter: Object.keys(filter).length > 0 ? filter : undefined, 
+    // filter: Object.keys(filter).length > 0 ? filter : undefined,
   });
 };
 
 export const getContactById = async (req, res) => {
-const {_id: userId} = req.user;
+  const { _id: userId } = req.user;
 
-  const { contactId : _id } = req.params;
+  const { contactId: _id } = req.params;
   const contact = await findContactById({ _id, userId });
-
 
   if (!contact) {
     throw createHttpError(404, `Contact with id ${_id} not found!`);
@@ -62,21 +61,22 @@ const {_id: userId} = req.user;
 };
 
 export const addContact = async (req, res) => {
-  const {_id: userId} = req.user;
+  const { _id: userId } = req.user;
   const contact = req.body;
-  const newContact = await addContactToBd({...contact, userId});
+  const newContact = await addContactToBd({ ...contact, userId });
 
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
     data: newContact,
   });
-
 };
 
 export const patchContact = async (req, res) => {
-  const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+    const { contactId: _id } = req.params;
+    const { _id: userId } = req.user;
+  console.log({_id, userId});
+  const result = await updateContact({userId, _id }, req.body);
 
   if (!result) {
     throw createHttpError(404, `Contact with id ${contactId} not found!`);
@@ -90,7 +90,7 @@ export const patchContact = async (req, res) => {
 
 export const deleteContactById = async (req, res) => {
   const { contactId: _id } = req.params;
-   const { _id: userId } = req.user;
+  const { _id: userId } = req.user;
   const contact = await deleteContactFromDb({ _id, userId });
 
   if (!contact) {

@@ -52,9 +52,9 @@ export const addContactToBd = async (contact) => {
   return newContact;
 };
 
-export const updateContact = async (contactId, contact, options = {}) => {
+export const updateContact = async (filter, contact, options = {}) => {
   const rawResult = await contactsCollection.findOneAndUpdate(
-    { _id: contactId },
+   filter,
     contact,
     {
       new: true,
@@ -73,3 +73,5 @@ export const deleteContactFromDb = async (filter) => {
   const contact = await contactsCollection.findOneAndDelete(filter);
   return contact;
 };
+
+
