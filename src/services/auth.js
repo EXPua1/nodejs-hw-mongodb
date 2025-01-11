@@ -17,7 +17,7 @@ import {
   refreshTokenLifetime,
 } from '../constants/users.js';
 import { env } from '../utils/env.js';
-import { send } from 'process';
+
 import { sendEmail } from '../utils/sendMail.js';
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 
