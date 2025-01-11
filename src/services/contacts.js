@@ -63,10 +63,12 @@ export const updateContact = async (filter, contact, options = {}) => {
     },
   );
   if (!rawResult || !rawResult.value) return null;
+ 
   return {
     contact: rawResult.value,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
+  
 };
 
 export const deleteContactFromDb = async (filter) => {

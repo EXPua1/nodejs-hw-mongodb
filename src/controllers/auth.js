@@ -6,11 +6,10 @@ const setupSession = (res, session) => {
     expires: session.refreshTokenValidUntil,
   });
 
- res.cookie('sessionId', session.id, {
-   httpOnly: true,
-   expires: session.refreshTokenValidUntil,
- });
-
+  res.cookie('sessionId', session.id, {
+    httpOnly: true,
+    expires: session.refreshTokenValidUntil,
+  });
 };
 
 export const registerController = async (req, res) => {
@@ -56,16 +55,34 @@ export const refreshTokenController = async (req, res) => {
   });
 };
 
-
 export const logOutController = async (req, res) => {
-
   if (req.cookies.sessionId) {
     await authServices.logoutUser(req.cookies.sessionId);
   }
-  
+
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
 
- }
+export const requestResetEmailController = async (req, res) => {
+  await authServices.requestResetToken(req.body.email);
+
+  res.json({
+    message: 'Reset password email sent',
+    status: 200,
+    data: {},
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await authServices.resetPassword(req.body);
+  
+
+  res.json({
+    message: 'Password was successfully reset!',
+    status: 200,
+    data: {},
+  });
+};
