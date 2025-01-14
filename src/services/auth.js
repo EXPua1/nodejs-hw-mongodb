@@ -159,8 +159,8 @@ export const requestResetToken = async (email) => {
   const token = jwt.sign({email}, jwtSecret, {expiresIn: '2h'})
 
   const html = template({
-    link: `${appDomain}/reset-password?token=${token}`,
-  });
+    link: `${appDomain}/reset-pwd?token=${token}`,
+  });3
 
   const verifyEmail = {
     from: env(SMTP.SMTP_FROM),
