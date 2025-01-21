@@ -7,7 +7,7 @@ import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 
-import path from "node:path"
+import path from 'node:path';
 import { readFile } from 'node:fs/promises';
 
 import Handlebars from 'handlebars';
@@ -21,18 +21,19 @@ import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 
-
+import { getFullNameFromGoogleTokenPayload, validateCode } from '../utils/googleOAuth2.js';
 
 // const emailTemplatePath = path.join(TEMPLATE_DIR, 'verify-email.html');
 // const emailTemplateSource = await readFile(emailTemplatePath, 'utf-8');
 // const appDomain = env('APP_DOMAIN');
 // const jwtSecret = env('JWT_SECRET');
 const emailTemplateResetPath = path.join(TEMPLATES_DIR, 'reset-password.html');
-const emailTemplateSourceReset = await readFile(emailTemplateResetPath, 'utf-8');
+const emailTemplateSourceReset = await readFile(
+  emailTemplateResetPath,
+  'utf-8',
+);
 const appDomain = env('APP_DOMAIN');
 const jwtSecret = env('JWT_SECRET');
-
-
 
 const createSessionData = () => ({
   accessToken: randomBytes(30).toString('base64'),
@@ -68,7 +69,7 @@ export const register = async (payload) => {
   //   to: email,
   //   subject: 'Verify email',
   //   html,
-   
+
   // }
   // await sendEmail(verifyEmail);
 
@@ -156,41 +157,61 @@ export const requestResetToken = async (email) => {
 
   const template = Handlebars.compile(emailTemplateSourceReset);
 
-  const token = jwt.sign({email}, jwtSecret, {expiresIn: '2h'})
+  const token = jwt.sign({ email }, jwtSecret, { expiresIn: '2h' });
 
   const html = template({
     link: `${appDomain}/reset-pwd?token=${token}`,
-  });3
+  });
+  3;
 
   const verifyEmail = {
     from: env(SMTP.SMTP_FROM),
     to: email,
     subject: 'reset password',
     html,
-
-  }
+  };
   await sendEmail(verifyEmail);
 };
 
-
 export const resetPassword = async (payload) => {
- 
-
-    try {
-      const {email} = jwt.verify(payload.token, jwtSecret);
-      const user = await UserCollection.findOne({ email });
-      if (!user) {
-        throw createHttpError(404, 'User not found!');
-      }
-      const encryptedPassword = await bcrypt.hash(payload.password, 10);
-      await UserCollection.updateOne(
-        { _id: user._id },
-        { password: encryptedPassword },
-      );
-    } catch (err) {
-      if (err instanceof Error) throw createHttpError(401, 'Token is expired or invalid.');
-      throw err;
+  try {
+    const { email } = jwt.verify(payload.token, jwtSecret);
+    const user = await UserCollection.findOne({ email });
+    if (!user) {
+      throw createHttpError(404, 'User not found!');
+    }
+    const encryptedPassword = await bcrypt.hash(payload.password, 10);
+    await UserCollection.updateOne(
+      { _id: user._id },
+      { password: encryptedPassword },
+    );
+  } catch (err) {
+    if (err instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid.');
+    throw err;
   }
- 
-  
+};
+
+export const loginOrSignupWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code);
+  const payload = loginTicket.getPayload();
+  if (!payload) throw createHttpError(401);
+
+  let user = await UserCollection.findOne({ email: payload.email });
+  if (!user) {
+    const password = await bcrypt.hash(randomBytes(10), 10);
+    user = await UserCollection.create({
+      email: payload.email,
+      name: getFullNameFromGoogleTokenPayload(payload),
+      password,
+      role: 'parent',
+    });
+  }
+
+  const newSession = createSessionData();
+
+  return await SessionsCollection.create({
+    userId: user._id,
+    ...newSession,
+  });
 };

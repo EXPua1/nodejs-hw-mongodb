@@ -4,7 +4,7 @@ export const contactSchema = Joi.object({
   name: Joi.string()
     .min(3)
     .max(20)
-    .pattern(/^[a-zA-Zа-яА-ЯёЁ]+$/)
+    .pattern(/^[a-zA-Zа-яА-ЯёЁ\s]+$/)
     .required()
     .messages({
       'string.base': 'name should be a string',

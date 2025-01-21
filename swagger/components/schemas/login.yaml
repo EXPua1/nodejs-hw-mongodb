@@ -1,0 +1,40 @@
+type: object
+required:
+ - email
+ - password
+ - name
+
+components:
+  schemas:
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: 'johndoe@example.com'
+        password:
+          type: string
+          format: password
+          example: 'password123'
+    UserRegistration:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: 'John Doe'
+        email:
+          type: string
+          format: email
+          example: 'johndoe@example.com'
+        password:
+          type: string
+          format: password
+          example: 'password123'
