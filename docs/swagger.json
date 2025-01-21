@@ -330,7 +330,8 @@
             "schema": {
               "type": "string",
               "example": "65ca67e7ae7f10c88b598384"
-            }
+            },
+            "description": "The unique identifier of the contact to retrieve."
           }
         ],
         "responses": {
@@ -387,7 +388,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65ca67e7ae7f10c88b598384"
+              "example": "65ca67e7ae7f10c88b598384",
+              "description": "updateContact"
             }
           }
         ],
