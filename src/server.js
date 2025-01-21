@@ -27,7 +27,7 @@ export const setupServer = () => {
   });
 
   app.use(router);
-  app.use('/api/docs',  swaggerDocs());
+  app.use('/api-docs',  swaggerDocs());
 
   app.use(
     pino({

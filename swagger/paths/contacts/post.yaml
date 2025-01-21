@@ -10,13 +10,14 @@ requestBody:
   description: 'Data required to create a new contact'
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         required:
           - name
           - email
           - phoneNumber
+          
         properties:
           name:
             type: string

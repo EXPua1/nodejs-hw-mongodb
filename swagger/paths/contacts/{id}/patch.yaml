@@ -18,7 +18,7 @@ requestBody:
   description: 'Data to update the contact'
   required: true
   content:
-    application/json:
+     multipart/form-data:
       schema:
         type: object
         properties:
