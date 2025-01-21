@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://my-contacts.com/api/v1"
+      "url": "https://nodejs-hw-mongodb-1-ux75.onrender.com"
     }
   ],
   "tags": [
@@ -409,7 +409,7 @@
                   },
                   "phone": {
                     "type": "string",
-                    "example": "+123456789"
+                    "example": "+380631578376"
                   },
                   "contactType": {
                     "type": "string",
