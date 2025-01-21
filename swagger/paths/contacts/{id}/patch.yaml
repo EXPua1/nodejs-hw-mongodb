@@ -29,7 +29,7 @@ requestBody:
             example: johndoe@example.com
           phone:
             type: string
-            example: '+123456789'
+            example: '+380631578376'
           contactType:
             type: string
             enum: ['work', 'home', 'personal']
