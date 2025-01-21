@@ -199,15 +199,18 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "John Doe"
+                    "example": "John Doe",
+                    "description": "Contact's name"
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
+                    "description": "Contact's email",
                     "example": "johndoe@example.com"
                   },
                   "phoneNumber": {
                     "type": "string",
+                    "description": "Contact's phone number",
                     "example": "+380631578376"
                   },
                   "contactType": {
@@ -217,6 +220,7 @@
                       "home",
                       "personal"
                     ],
+                    "example": "work",
                     "default": "personal"
                   },
                   "photo": {
@@ -421,18 +425,22 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "John Doe"
+                    "example": "John Doe",
+                    "description": "Contact's name"
                   },
                   "email": {
                     "type": "string",
+                    "description": "Contact's email",
                     "example": "johndoe@example.com"
                   },
                   "phone": {
                     "type": "string",
+                    "description": "Contact's phone number",
                     "example": "+380631578376"
                   },
                   "contactType": {
                     "type": "string",
+                    "description": "Contact's type",
                     "enum": [
                       "work",
                       "home",
