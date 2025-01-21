@@ -13,6 +13,7 @@ parameters:
     schema:
       type: string
       example: '65ca67e7ae7f10c88b598384'
+    description: The unique identifier of the contact to retrieve.
 responses:
   '200':
     description: 'Get student by id'
