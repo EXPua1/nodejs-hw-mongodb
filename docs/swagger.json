@@ -218,6 +218,16 @@
                       "personal"
                     ],
                     "default": "personal"
+                  },
+                  "photo": {
+                    "description": "Contact's photo",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "isFavourite": {
+                    "description": "Favorite contact",
+                    "type": "boolean",
+                    "example": false
                   }
                 }
               }
@@ -429,6 +439,16 @@
                       "personal"
                     ],
                     "example": "personal"
+                  },
+                  "photo": {
+                    "description": "Contact's photo",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "isFavourite": {
+                    "description": "Favorite contact",
+                    "type": "boolean",
+                    "example": false
                   }
                 }
               }
